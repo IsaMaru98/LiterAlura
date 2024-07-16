@@ -1,26 +1,70 @@
 package com.alurachallenges.bookapi.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name="libros")
+public class Libro {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String titulo;
+    private List<String> idiomas;
+    private Double totalDescargas;
+    @ManyToMany(mappedBy = "libros")
+    private Set<Autor> autores = new HashSet<>();
 
-public record Libro(
-        @JsonAlias("title") String titulo,
+    public Libro(){}
+    public Libro(LibroDTO libroDTO){
+        this.titulo = libroDTO.titulo();
+        //this.autores
+        this.idiomas=libroDTO.idiomas();
+        this.totalDescargas = libroDTO.totalDescargas();
 
-        @JsonAlias("authors") List<Autor> autores,
-        @JsonAlias("languages") List<String> idiomas,
+    }
 
-        @JsonAlias("download_count") Double totalDescargas
+    public Long getId() {
+        return id;
+    }
 
-) {
-    @Override
-    public String toString() {
-        return  "Titulo: " + titulo+
-                ", Total Descargas: " + totalDescargas+
-                ", Idiomas: " + idiomas +
-                ", Autores: " + autores;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public List<String> getIdiomas() {
+        return idiomas;
+    }
+
+    public void setIdiomas(List<String> idiomas) {
+        this.idiomas = idiomas;
+    }
+
+    public Double getTotalDescargas() {
+        return totalDescargas;
+    }
+
+    public void setTotalDescargas(Double totalDescargas) {
+        this.totalDescargas = totalDescargas;
+    }
+
+    public Set<Autor> getAutores() {
+        return autores;
+    }
+
+    public void setAutores(Set<Autor> autores) {
+        this.autores = autores;
     }
 }

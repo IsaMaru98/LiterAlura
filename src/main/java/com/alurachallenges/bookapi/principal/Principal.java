@@ -1,7 +1,7 @@
 package com.alurachallenges.bookapi.principal;
 
-import com.alurachallenges.bookapi.models.Libro;
-import com.alurachallenges.bookapi.models.Resultados;
+import com.alurachallenges.bookapi.models.LibroDTO;
+import com.alurachallenges.bookapi.models.ResultadosDTO;
 import com.alurachallenges.bookapi.service.ConsumoAPI;
 import com.alurachallenges.bookapi.service.ConvierteDatos;
 
@@ -72,9 +72,9 @@ public class Principal {
         System.out.println("Por favor escribe el nombre del libro que deseas buscar");
         var nombreLibro = scanner.nextLine();
         var json = consumoAPI.obtenerDatos(URL_BASE+"?search="+nombreLibro.replace(" ","%20"));
-        var datos = conversor.obtenerDatos(json, Resultados.class);
+        var datos = conversor.obtenerDatos(json, ResultadosDTO.class);
 //
-        Optional<Libro> libroBuscado = datos.resultados().stream()
+        Optional<LibroDTO> libroBuscado = datos.resultados().stream()
                 .filter(l->l.titulo().toUpperCase().contains(nombreLibro.toUpperCase()))
                 .findFirst();
         if(libroBuscado.isPresent()){
